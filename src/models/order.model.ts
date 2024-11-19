@@ -1,41 +1,31 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-export interface order{
-    grandTotal: number;
-    orderItems:  Types.ObjectId;
-    createBy: Types.ObjectId;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    _id?: Types.ObjectId;
+export interface Order {
+  _id?: Types.ObjectId;
+  grandTotal: number;
+  createdBy: Types.ObjectId;
+  status: "pending" | "completed" | "cancelled";
 }
 
-const Schema = mongoose.Schema;
-
-const ProductsSchema = new Schema<order>(
-    {
-        grandTotal: {
-            type: Schema.Types.Number,
-            required: true,
-        },
-        orderItems:{
-            type: Schema.Types.ObjectId,
-            ref: "orderDetail",
-        },
-        createBy:{
-            type: Schema.Types.ObjectId,
-            ref: "",
-        },
-        status:{
-            type: Schema.Types.String,
-            enum: ["pending", "completed", "cancelled"]
-        }
+const orderSchema = new Schema<Order>(
+  {
+    grandTotal: {
+      type: Number,
+      required: true,
     },
-    {
-        timestamps: true,
-    }
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "completed", "cancelled"],
+      default: "pending",
+    },
+  },
+  { timestamps: true }
 );
 
-const orderModel = mongoose.model("Order", ProductsSchema);
-
-export default orderModel;
+const OrderModel = mongoose.model("Order", orderSchema);
+export default OrderModel;
