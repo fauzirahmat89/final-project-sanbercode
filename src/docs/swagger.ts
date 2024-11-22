@@ -13,6 +13,10 @@ const doc = {
         url: "http://localhost:3000/api",
         description: "Local Server",
       },
+      {
+        url:"http://final-project-sanbercode-alpha.vercel.app/api",
+        description: "Production Server",
+      },
     ],
     components: {
       securitySchemes: {
